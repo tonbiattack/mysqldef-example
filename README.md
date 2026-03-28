@@ -32,7 +32,11 @@ brew install sqldef/sqldef/mysqldef
 ### 1. MySQLを起動する
 
 ```bash
+# Makefile
 make db-up
+
+# 素のコマンド
+docker compose up -d
 ```
 
 コンテナの起動後、ヘルスチェックが通るまで少し待ちます。
@@ -40,7 +44,11 @@ make db-up
 ### 2. 差分を確認する（dry-run）
 
 ```bash
+# Makefile
 make db-migrate-dry
+
+# 素のコマンド
+mysqldef -u root -p password -h 127.0.0.1 -P 3307 mydb --dry-run < schema.sql
 ```
 
 実際にSQLを適用せず、どんな変更が実行されるかを確認できます。
@@ -49,7 +57,11 @@ make db-migrate-dry
 ### 3. スキーマを適用する
 
 ```bash
+# Makefile
 make db-migrate
+
+# 素のコマンド
+mysqldef -u root -p password -h 127.0.0.1 -P 3307 mydb --apply < schema.sql
 ```
 
 `schema.sql` の内容がDBに反映されます。
@@ -72,7 +84,11 @@ CREATE TABLE users (
 差分を確認すると `ALTER TABLE` が生成されます。
 
 ```bash
+# Makefile
 make db-migrate-dry
+
+# 素のコマンド
+mysqldef -u root -p password -h 127.0.0.1 -P 3307 mydb --dry-run < schema.sql
 # -- dry run --
 # ALTER TABLE `users` ADD COLUMN `deleted_at` datetime;
 ```
@@ -80,7 +96,11 @@ make db-migrate-dry
 問題なければ適用します。
 
 ```bash
+# Makefile
 make db-migrate
+
+# 素のコマンド
+mysqldef -u root -p password -h 127.0.0.1 -P 3307 mydb --apply < schema.sql
 ```
 
 ## 注意点
