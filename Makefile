@@ -29,5 +29,5 @@ db-migrate:
 # seeds.sql のマスタデータをDBに投入する（冪等：何度実行しても同じ結果になる）
 # ※ seeds.sql から行を削除してもDBのレコードは自動削除されない
 db-seed:
-	docker compose exec db \
+	docker compose exec -T db \
 		mysql -u $(DB_USER) -p$(DB_PASS) $(DB_NAME) < seeds.sql
