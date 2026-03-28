@@ -73,10 +73,16 @@ docker compose exec db mysql -u root -ppassword mydb < seeds.sql
 ```
 
 `seeds.sql` のデータがDBに反映されます。
-`ON DUPLICATE KEY UPDATE` で冪等に書かれているため、何度実行しても同じ結果になります。
+`ON DUPLICATE KEY UPDATE` を使っているため、既にデータがある状態で実行しても次の挙動になります。
 
-`seeds.sql` に行を追加・変更した場合は次の実行時に反映されます。
-ただし `seeds.sql` から行を削除してもDBのレコードは自動削除されません。削除が必要な場合は手動でDELETE文を実行してください。
+| 操作 | 挙動 |
+|------|------|
+| `seeds.sql` に行を追加する | INSERT される |
+| 既存行の `name` を変更する | UPDATE される |
+| `seeds.sql` から行を削除する | DBには残ったまま（自動削除されない） |
+| 何も変更せず再実行する | UPDATE はされるが値は同じまま（副作用なし） |
+
+`seeds.sql` から行を削除してもDBのレコードは自動削除されません。削除が必要な場合は手動でDELETE文を実行してください。
 
 ### 5. カラムを追加してみる
 
