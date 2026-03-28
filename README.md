@@ -62,7 +62,23 @@ docker compose run --rm mysqldef \
 `schema.sql` の内容がDBに反映されます。
 現在のバージョンでは `--apply` を省略してもデフォルトで適用されますが、将来のバージョンでは必須になる予定のため、明示して付ける方が安全です。
 
-### 4. カラムを追加してみる
+### 4. マスタデータを投入する
+
+```bash
+# Makefile
+make db-seed
+
+# 素のコマンド
+docker compose exec db mysql -u root -ppassword mydb < seeds.sql
+```
+
+`seeds.sql` のデータがDBに反映されます。
+`ON DUPLICATE KEY UPDATE` で冪等に書かれているため、何度実行しても同じ結果になります。
+
+`seeds.sql` に行を追加・変更した場合は次の実行時に反映されます。
+ただし `seeds.sql` から行を削除してもDBのレコードは自動削除されません。削除が必要な場合は手動でDELETE文を実行してください。
+
+### 5. カラムを追加してみる
 
 `schema.sql` の `users` テーブルに `deleted_at` を追記します。
 

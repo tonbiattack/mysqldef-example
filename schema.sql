@@ -10,6 +10,12 @@ CREATE TABLE users (
     UNIQUE KEY uq_email (email)
 );
 
+-- 区分値マスタ（seeds.sql でデータを投入する）
+CREATE TABLE status_types (
+    code       TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+    name       VARCHAR(50)      NOT NULL
+);
+
 CREATE TABLE posts (
     id         BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id    BIGINT UNSIGNED NOT NULL,
