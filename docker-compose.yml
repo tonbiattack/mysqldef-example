@@ -11,3 +11,16 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  mysqldef:
+    build:
+      context: .
+      dockerfile: docker/mysqldef/Dockerfile
+    volumes:
+      - ./schema.sql:/schema.sql
+    depends_on:
+      db:
+        condition: service_healthy
+    working_dir: /
+    profiles:
+      - migrate
